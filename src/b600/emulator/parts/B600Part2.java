@@ -19,16 +19,13 @@ import javax.inject.Named;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.core.di.extensions.EventTopic;
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.UIEvents.Perspective;
 import org.eclipse.e4.ui.workbench.modeling.IPartListener;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -47,7 +44,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.log.LogService;
 
-public class B600Part {
+public class B600Part2 {
 
 	private Image image;
 
@@ -78,7 +75,7 @@ public class B600Part {
 	}
 
 	private void createImage(Composite parent) {
-		Bundle bundle = FrameworkUtil.getBundle(B600Part.class);
+		Bundle bundle = FrameworkUtil.getBundle(B600Part2.class);
 		URL url = FileLocator.find(bundle, new Path("icons/b600_bg.png"), null);
 		ImageDescriptor imageDcr = ImageDescriptor.createFromURL(url);
 		this.image = imageDcr.createImage();
@@ -114,17 +111,9 @@ public class B600Part {
 	public void setSelection(
 		@Named(IServiceConstants.ACTIVE_SELECTION)
 		Object selection){
-
 		if(selection != null){
-			if(selection instanceof ISelection) {
-				label.setText(selection.toString());
-			}
+			label.setText(selection.toString());
 		}
-	}
 	
-	@Inject
-	@Optional
-	public void receiveEvent(@UIEventTopic("rainbow/color") String data){
-		label.setText(data);
 	}
 }

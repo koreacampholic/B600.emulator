@@ -7,6 +7,9 @@
           <children xsi:type="basic:PartStack" xmi:id="_DlOgcEFEEeOOwuKfUcsTDA">
             <children xsi:type="basic:Part" xmi:id="_DlOgcUFEEeOOwuKfUcsTDA" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part" label="B600 Part"/>
             <children xsi:type="basic:Part" xmi:id="_G4sdQEH9EeOwkc4uo8t81w" elementId="" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.tutorial.jface.FileBrowserPart" label="FileBrowser Part"/>
+            <children xsi:type="basic:Part" xmi:id="_3AJ04EQ5EeOgpuR8U8Mv-w" elementId="b600.emulator.part.Rainbow" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart" label="Rainbow"/>
+            <children xsi:type="basic:Part" xmi:id="_Q1qh4ERcEeOgpuR8U8Mv-w" elementId="b600.emulator.part.0" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part2" label="B600 Part2"/>
+            <children xsi:type="basic:Part" xmi:id="_aZeoMERhEeOgpuR8U8Mv-w" elementId="b600.emulator.part.1" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart2" label="Rainbow2"/>
           </children>
         </children>
       </children>
