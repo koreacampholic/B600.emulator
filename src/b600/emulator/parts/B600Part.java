@@ -13,11 +13,13 @@ package b600.emulator.parts;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.workbench.UIEvents.Perspective;
 import org.eclipse.e4.ui.workbench.modeling.IPartListener;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -37,30 +39,33 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.service.log.LogService;
 
 public class B600Part {
 
-	private  Image image;
-	
+	private Image image;
+
 	private Button button1;
+
+	@Inject
+	private LogService LOGGER;
+	
+	@Inject
+	private MWindow window;
+	
 
 	@PostConstruct
 	public void createComposite(Composite parent) {
 		parent.setLayout(new GridLayout(2, false));
 		createImage(parent);
-		parent.setBackgroundImage(image);
-		parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		// parent.setBackgroundImage(image);
+		// parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
-		button1 = new Button(parent, SWT.PUSH);
+		Label label = new Label(parent, SWT.NONE);
+		label.setText(window.getLabel());
 		
-
-		/*parent.getShell().addListener(SWT.RESIZE, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				System.out.println("RESIZE Event");				
-			}
-		});*/
+		// button1 = new Button(parent, SWT.PUSH);
+		LOGGER.log(LogService.LOG_DEBUG, "Hello");
 
 	}
 
