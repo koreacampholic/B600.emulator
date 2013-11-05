@@ -18,8 +18,10 @@ import javax.inject.Named;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.core.di.extensions.EventTopic;
+import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
@@ -31,9 +33,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,18 +52,36 @@ import org.eclipse.swt.widgets.Listener;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.log.LogService;
+import org.osgi.service.prefs.BackingStoreException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class B600Part {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(B600Part.class);
 
 	private Image image;
 
 	private Button button1;
 
-	@Inject
-	private LogService LOGGER;
+	//@Inject
+	//private LogService LOGGER;
 	
 	@Inject
 	private MWindow window;
+	
+	@Inject
+	@Named("math.random")
+	private Object random;
+	
+	@Inject
+	@Preference(nodePath="b00.emulator.parts", value="greeting")
+	private String greeting;
+	
+	@Inject
+	@Preference(nodePath="b600.emulator.parts")
+	private IEclipsePreferences prefs;
+	
 	
 	Label label;
 	
@@ -70,10 +94,18 @@ public class B600Part {
 		// parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		label = new Label(parent, SWT.NONE);
-		label.setText(window.getLabel());
+		label.setText(greeting + " "+window.getLabel()+" "+random);			
 		
 		// button1 = new Button(parent, SWT.PUSH);
-		LOGGER.log(LogService.LOG_DEBUG, "Hello");
+		LOGGER.debug("random :: {}", random);
+		
+		parent.addPaintListener(new PaintListener() {			
+			@Override
+			public void paintControl(PaintEvent e) {
+				e.gc.drawLine(10, 10, 100, 100);
+				
+			}
+		});
 
 	}
 
@@ -124,7 +156,17 @@ public class B600Part {
 	
 	@Inject
 	@Optional
-	public void receiveEvent(@UIEventTopic("rainbow/color") String data){
-		label.setText(data);
+	public void receiveEvent(@UIEventTopic("rainbow/color") String data) throws BackingStoreException{
+		// label.setText(data);
+		prefs.put("greeting", "I like " + data);
+		prefs.sync();
+	}
+	
+	@Inject
+	@Optional
+	public void setText(@Preference(nodePath="b600.emulator.parts",value="greeting") String text){
+		if(text!=null && label!=null && !label.isDisposed()){
+			label.setText(text);
+		}
 	}
 }
