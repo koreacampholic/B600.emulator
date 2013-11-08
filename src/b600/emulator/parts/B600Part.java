@@ -10,6 +10,9 @@
  *******************************************************************************/
 package b600.emulator.parts;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +27,9 @@ import org.eclipse.e4.core.di.extensions.EventTopic;
 import org.eclipse.e4.core.di.extensions.Preference;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
+import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.model.application.ui.advanced.MPerspective;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.UIEvents.Perspective;
@@ -33,6 +38,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -49,6 +56,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.log.LogService;
@@ -63,6 +72,8 @@ public class B600Part {
 	private Image image;
 
 	private Button button1;
+	
+	
 
 	//@Inject
 	//private LogService LOGGER;
@@ -82,19 +93,34 @@ public class B600Part {
 	@Preference(nodePath="b600.emulator.parts")
 	private IEclipsePreferences prefs;
 	
+	@Inject
+	MApplication application;
 	
-	Label label;
+	@Inject
+	MTrimmedWindow trimmedwindow;
 	
+	
+	
+	Label label, labelpref;
+	
+	int focuspageCount = 0;
+	int paintCount = 0;
+	
+	private Shell shell;
+	
+	Text text ;
 
 	@PostConstruct
 	public void createComposite(Composite parent) {
-		parent.setLayout(new GridLayout(2, false));
+		
+		shell = parent.getShell();
+		//parent.setLayout(new GridLayout(2, false));
 		createImage(parent);
 		// parent.setBackgroundImage(image);
 		// parent.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		label = new Label(parent, SWT.NONE);
-		label.setText(greeting + " "+window.getLabel()+" "+random);			
+		label.setText(greeting + " "+window.getLabel()+" "+random+" "+ focuspageCount++ );
 		
 		// button1 = new Button(parent, SWT.PUSH);
 		LOGGER.debug("random :: {}", random);
@@ -103,10 +129,38 @@ public class B600Part {
 			@Override
 			public void paintControl(PaintEvent e) {
 				e.gc.drawLine(10, 10, 100, 100);
-				
+				e.gc.drawText(Integer.toString(paintCount++), 110, 110);
 			}
 		});
+		
+		/*parent.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				//super.controlResized(e);
+				shell.setSize(600, 400);
+			}
+		});*/
+		
+		text = new Text(parent, SWT.MULTI);
+		text.setBounds(200,200,350,350);
+		text.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		text.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
+		OutputStream os = new OutputStream() {
+			
+			@Override
+			public void write(int b) throws IOException {
+				text.append(Character.toString((char)b));
+			}
+		};
+		
+		System.setOut(new PrintStream(os));
+		
+		for(int i=0;i<10;i++){
+			// LOGGER.log(LogService.LOG_INFO, "Hello Console "+i );
+			LOGGER.debug("Hello Console {} !!", i);
+		}
+		
 	}
 
 	private void createImage(Composite parent) {
@@ -146,7 +200,6 @@ public class B600Part {
 	public void setSelection(
 		@Named(IServiceConstants.ACTIVE_SELECTION)
 		Object selection){
-
 		if(selection != null){
 			if(selection instanceof ISelection) {
 				label.setText(selection.toString());
@@ -157,7 +210,7 @@ public class B600Part {
 	@Inject
 	@Optional
 	public void receiveEvent(@UIEventTopic("rainbow/color") String data) throws BackingStoreException{
-		// label.setText(data);
+		// label.setText(data + " " +paintCount);
 		prefs.put("greeting", "I like " + data);
 		prefs.sync();
 	}
@@ -166,7 +219,7 @@ public class B600Part {
 	@Optional
 	public void setText(@Preference(nodePath="b600.emulator.parts",value="greeting") String text){
 		if(text!=null && label!=null && !label.isDisposed()){
-			label.setText(text);
+			labelpref.setText(text);
 		}
 	}
 }

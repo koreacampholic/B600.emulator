@@ -19,6 +19,10 @@
                name="appName"
                value="B600.emulator">
          </property>
+         <property
+        		name="rendererFactoryUri"
+        		value="bundleclass://B600.emulator/b600.emulator.renderer.MyWorkbenchRendererFactory">
+       </property>
       </product>
    </extension>
 

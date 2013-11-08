@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_DlMrQEFEEeOOwuKfUcsTDA" elementId="org.eclipse.e4.ide.application" bindingContexts="_DlNSWEFEEeOOwuKfUcsTDA">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_DlNSUEFEEeOOwuKfUcsTDA" label="B600.emulator" width="500" height="400">
-    <children xsi:type="advanced:PerspectiveStack" xmi:id="_DlN5bkFEEeOOwuKfUcsTDA">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_DlNSUEFEEeOOwuKfUcsTDA" label="B600.emulator" width="605" height="450">
+    <children xsi:type="basic:Part" xmi:id="_02700EeKEeOzU9RMpee7aw" elementId="b600.emulator.part.b600main" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600MainPart"/>
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_DlN5bkFEEeOOwuKfUcsTDA" visible="false">
       <children xsi:type="advanced:Perspective" xmi:id="_DlN5b0FEEeOOwuKfUcsTDA">
         <children xsi:type="basic:PartSashContainer" xmi:id="_DlN5cEFEEeOOwuKfUcsTDA">
           <children xsi:type="basic:PartStack" xmi:id="_DlOgcEFEEeOOwuKfUcsTDA">
-            <children xsi:type="basic:Part" xmi:id="_DlOgcUFEEeOOwuKfUcsTDA" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part" label="B600 Part"/>
+            <children xsi:type="basic:Part" xmi:id="_DlOgcUFEEeOOwuKfUcsTDA" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part" label="B600 Part"/>
             <children xsi:type="basic:Part" xmi:id="_G4sdQEH9EeOwkc4uo8t81w" elementId="" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.tutorial.jface.FileBrowserPart" label="FileBrowser Part"/>
-            <children xsi:type="basic:Part" xmi:id="_3AJ04EQ5EeOgpuR8U8Mv-w" elementId="b600.emulator.part.Rainbow" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart" label="Rainbow"/>
-            <children xsi:type="basic:Part" xmi:id="_Q1qh4ERcEeOgpuR8U8Mv-w" elementId="b600.emulator.part.0" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part2" label="B600 Part2"/>
-            <children xsi:type="basic:Part" xmi:id="_aZeoMERhEeOgpuR8U8Mv-w" elementId="b600.emulator.part.1" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart2" label="Rainbow2"/>
+            <children xsi:type="basic:Part" xmi:id="_3AJ04EQ5EeOgpuR8U8Mv-w" elementId="b600.emulator.part.Rainbow" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart" label="Rainbow"/>
+            <children xsi:type="basic:Part" xmi:id="_Q1qh4ERcEeOgpuR8U8Mv-w" elementId="b600.emulator.part.0" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.B600Part2" label="B600 Part2"/>
+            <children xsi:type="basic:Part" xmi:id="_aZeoMERhEeOgpuR8U8Mv-w" elementId="b600.emulator.part.1" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.parts.RainbowPart2" label="Rainbow2"/>
           </children>
         </children>
       </children>
