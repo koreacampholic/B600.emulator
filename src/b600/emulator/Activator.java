@@ -39,7 +39,13 @@ public class Activator implements BundleActivator {
 	
 
 	static BundleContext getContext() {
+		
+		//test git
+		
+		
 		return context;
+		
+		
 	}
 
 	/*
