@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.WriterAppender;
-import org.eclipse.e4.ui.services.internal.events.EventBroker;
-import org.eclipse.swt.internal.win32.CREATESTRUCT;
 import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -51,7 +49,7 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 		
-		init();	//  log4j �ʱ�ȭ 
+		init();	//  log4j �ʱ�ȭ 
 		
 		
 		System.out.println("START B600.emulator Activator");
