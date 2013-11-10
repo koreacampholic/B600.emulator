@@ -76,7 +76,7 @@ public class B600MainPart {
 
 		// parent.setLayout(new GridLayout(3, false));
 
-		parent.setLayoutDeferred(true); // ╟Ма╓ю╖д║╩Г©К
+		parent.setLayoutDeferred(true); // О©╫О©╫О©╫О©╫О©╫О©╫д║О©╫О©╫О©╫
 
 		// add console
 		addConsoleGroup(parent);
@@ -111,24 +111,26 @@ public class B600MainPart {
 		agentConsoleGroup.setText("Agent Console");
 		agentConsoleGroup.setBounds(50, 50, 220, 100);
 
-		agentConsoleText = new Text(agentConsoleGroup, SWT.MULTI);
+		agentConsoleText = new Text(agentConsoleGroup, SWT.MULTI | SWT.V_SCROLL);
 		agentConsoleText.setBounds(2, 15, 215, 83);
 		agentConsoleText.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_BLACK));
 		agentConsoleText.setForeground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WHITE));
+		agentConsoleText.setEditable(false);
 
 		Group firmConsoleGroup1 = new Group(parent, SWT.NONE);
 		firmConsoleGroup1.setText("Firmware Console");
 		firmConsoleGroup1.setBounds(280, 50, 220, 100);
 
-		firmConsoleText = new Text(firmConsoleGroup1, SWT.MULTI);
+		firmConsoleText = new Text(firmConsoleGroup1, SWT.MULTI | SWT.V_SCROLL);
 		firmConsoleText.setBounds(2, 15, 215, 83);
 		firmConsoleText.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_BLACK));
 		firmConsoleText.setForeground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WHITE));
-
+		firmConsoleText.setEditable(false);
+		
 	}
 
 	@Focus
