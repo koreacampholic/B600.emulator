@@ -9,6 +9,8 @@ import javax.inject.Inject;
 
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.WriterAppender;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.property.Properties;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.e4.core.di.annotations.Optional;
@@ -16,6 +18,7 @@ import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -113,9 +116,13 @@ public class B600MainPart {
 			
 			@Override
 			public void run() {				
-				StatusModel element = new StatusModel("Agent기동", "OK");
-				viewer.add(element);
-				// viewer.refresh();
+				java.util.List<StatusModel> statuses = StatusModelProvider.INSTANCE.getStatus();
+				for(StatusModel status : statuses){
+					if(status.getStatusItem().equals("Firmware기동")){
+						status.setStatusValue("OK");
+					}
+				}
+				viewer.refresh();
 			}
 		});
 
@@ -151,10 +158,13 @@ public class B600MainPart {
 		table.setLinesVisible(true);
 		table.getHorizontalBar().setVisible(false);
 
-		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setInput(StatusModelProvider.INSTANCE.getStatus());
+		//viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new ObservableListContentProvider());
+		java.util.List<StatusModel> status = StatusModelProvider.INSTANCE.getStatus();
+		IObservableList input = Properties.selfList(StatusModel.class).observe(status);
 		
-		
+		viewer.setInput(input);
+				
 	}
 
 	private void createColumns(TableViewer viewer2) {

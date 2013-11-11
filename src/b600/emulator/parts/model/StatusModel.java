@@ -1,5 +1,6 @@
 package b600.emulator.parts.model;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -59,5 +60,6 @@ public class StatusModel {
 		return this.statusItem.equals(((StatusModel) obj).getStatusItem()) ? true
 				: false;
 	}
+
 
 }
