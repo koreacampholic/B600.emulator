@@ -17,6 +17,12 @@ import org.eclipse.e4.ui.di.UIEventTopic;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -43,6 +49,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
@@ -52,6 +60,8 @@ import org.slf4j.LoggerFactory;
 
 import b600.emulator.Activator;
 import b600.emulator.parts.console.ConsoleTextStream;
+import b600.emulator.parts.model.StatusModel;
+import b600.emulator.parts.model.StatusModelProvider;
 
 public class B600MainPart {
 
@@ -67,6 +77,8 @@ public class B600MainPart {
 	@Inject
 	MPart mpart;
 
+	private TableViewer viewer;
+
 	@PostConstruct
 	public void createComposite(final Composite parent) {
 
@@ -76,7 +88,7 @@ public class B600MainPart {
 
 		// parent.setLayout(new GridLayout(3, false));
 
-		parent.setLayoutDeferred(true); // ������ġ���
+		parent.setLayoutDeferred(true); //
 
 		// add console
 		addConsoleGroup(parent);
@@ -84,6 +96,11 @@ public class B600MainPart {
 		// add logger by console
 		addLoggerByConsole();
 
+		// add label for table
+		addLabelForTable(parent);
+
+		// create tableviewer
+		createTableViewerForStatusInfo(parent);
 
 		// add buttons
 		Button button = new Button(parent, SWT.FLAT | SWT.PUSH);
@@ -91,7 +108,89 @@ public class B600MainPart {
 		button.setBackground(parent.getDisplay()
 				.getSystemColor(SWT.COLOR_BLACK));
 		button.setText("START");
+		
+		Display.getCurrent().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {				
+				StatusModel element = new StatusModel("Agent기동", "OK");
+				viewer.add(element);
+				// viewer.refresh();
+			}
+		});
 
+	}
+
+	private void addLabelForTable(final Composite parent) {
+		Label tlabel1 = new Label(parent, SWT.NONE);
+		tlabel1.setText("[상태정보]");
+		tlabel1.setForeground(parent.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
+		tlabel1.setBounds(120, 155, 100, 15);
+		
+		Label tlabel2 = new Label(parent, SWT.NONE);
+		tlabel2.setText("[버전정보]");
+		tlabel2.setForeground(parent.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
+		tlabel2.setBounds(350, 155, 100, 15);
+	}
+
+	private void createTableViewerForStatusInfo(final Composite parent) {
+		// define the TableViewer
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.V_SCROLL
+				| SWT.FULL_SELECTION | SWT.BORDER);
+
+		viewer.getControl().setBounds(50, 170, 220, 140);
+
+		// create the columns
+		createColumns(viewer);
+
+		// make lines and header visible
+		final Table table = viewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		table.getHorizontalBar().setVisible(false);
+
+		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setInput(StatusModelProvider.INSTANCE.getStatus());
+		
+		
+	}
+
+	private void createColumns(TableViewer viewer2) {
+		String[] titles = { "항목", "상태정보" };
+		int[] bounds = { 110, 110 };
+
+		TableViewerColumn col = createTableViwerColumn(titles[0], bounds[0], 0,
+				SWT.LEFT);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((StatusModel) element).getStatusItem();
+			}
+		});
+
+		col = createTableViwerColumn(titles[1], bounds[1], 1, SWT.CENTER);
+		col.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((StatusModel) element).getStatusValue();
+			}
+		});
+
+	}
+
+	private TableViewerColumn createTableViwerColumn(String title, int bound,
+			int j, int align) {
+		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+				SWT.NONE);
+		final TableColumn column = viewerColumn.getColumn();
+		column.setText(title);
+		column.setWidth(bound);
+		column.setResizable(false);
+		column.setMoveable(false);
+		column.setAlignment(align);
+		return viewerColumn;
 	}
 
 	private void addLoggerByConsole() {
@@ -130,7 +229,7 @@ public class B600MainPart {
 		firmConsoleText.setForeground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WHITE));
 		firmConsoleText.setEditable(false);
-		
+
 	}
 
 	@Focus

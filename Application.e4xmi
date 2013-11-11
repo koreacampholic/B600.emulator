@@ -15,6 +15,7 @@
         </children>
       </children>
     </children>
+    <children xsi:type="basic:Part" xmi:id="_dYgB8EqfEeOS3crvTLXLgA" elementId="b600.emulator.part.2" visible="false" contributionURI="bundleclass://B600.emulator/b600.emulator.tutorial.jface.TableViewerSample"/>
     <mainMenu xmi:id="_DlN5Z0FEEeOOwuKfUcsTDA" elementId="menu:org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_DlN5aEFEEeOOwuKfUcsTDA" label="File">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_DlN5aUFEEeOOwuKfUcsTDA" label="Open" iconURI="platform:/plugin/B600.emulator/icons/sample.gif" command="_DlNSX0FEEeOOwuKfUcsTDA"/>
